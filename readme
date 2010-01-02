@@ -1,0 +1,21 @@
+IRC Javascript Evaluator Example
+--------------------------------
+Just a simple example of using camel to receive a message from an irc based endpoint, parse it through a javascript ScriptEngine, and send the result back to the irc endpoint. 
+
+Requires JAVA_HOME to be set to a java6 SDK. Won't work on anything else because I wrote this quick and on the fly
+
+Starting
+--------
+From the command line type 
+ mvn compile exec:java -Dexec.mainClass=org.jamescarr.camel.App
+
+Usage
+-----
+By default it creates a bot named js-bot and drops it in #botwar on irc.freenode.net. To test it, join irc.freenode.net/#botwar and type
+
+?eval [some javascript snippet]
+
+for example:
+?eval (function(n){ return n==1?n:n*arguments.callee(n-1)})(5)
+
+
