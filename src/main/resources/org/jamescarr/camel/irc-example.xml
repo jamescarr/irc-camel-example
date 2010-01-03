@@ -16,10 +16,10 @@
 	<bean id="channel" class="org.apache.camel.component.irc.IrcComponent" scope="prototype"/>
 	<camel:camelContext id="context">
 		<camel:route>
-			<camel:from uri="channel:js--bot@irc.freenode.net/#test"/>
+			<camel:from uri="channel:js-bot@irc.freenode.net/#botwar"/>
 			<camel:pipeline>
 				<camel:to uri="bean:evaluator?method=evaluate"/>
-				<camel:to uri="channel:js--bot@irc.freenode.net/#test"/>			
+				<camel:to uri="channel:js-bot@irc.freenode.net/#botwar"/>			
 			</camel:pipeline>
 		</camel:route>
 	</camel:camelContext>
