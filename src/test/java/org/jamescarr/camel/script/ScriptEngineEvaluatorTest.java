@@ -1,18 +1,17 @@
 package org.jamescarr.camel.script;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import org.apache.camel.model.WhenDefinition;
 import org.jamescarr.camel.ScriptCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ScriptEngineEvaluatorTest {
 	private static final ScriptCommand VALID_EXPRESSION = new ScriptCommand("js", "input expression");
