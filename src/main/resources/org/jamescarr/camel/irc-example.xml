@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:camel="http://camel.apache.org/schema/spring" 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.1.0.xsd">
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.1.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="scriptEngineManager" class="javax.script.ScriptEngineManager"/>
-	<bean id="scriptEngine" factory-bean="scriptEngineManager" factory-method="getEngineByName">
-		<constructor-arg value="js"/>
-	</bean>
-
-	<bean id="evaluator" class="org.jamescarr.camel.App">
-		<property name="engine" ref="scriptEngine"/>
-	</bean>
-	<bean id="channel" class="org.apache.camel.component.irc.IrcComponent" scope="prototype"/>
+	<context:component-scan base-package="org.jamescarr.camel" />
 	
-	<bean id="parser" class="org.jamescarr.camel.CommandParser"/>
-	<bean id="validator" class="org.jamescarr.camel.ScriptInputValidator" />
+	<bean id="scriptEngineManager" class="javax.script.ScriptEngineManager"/>
+	<bean id="scriptEngine" abstract="true" factory-bean="scriptEngineManager" factory-method="getEngineByName"/>
+	
+	<bean id="js" class="org.jamescarr.camel.script.ScriptEngineEvaluator" lazy-init="true">
+		<property name="scriptEngine">
+			<bean parent="scriptEngine">
+				<constructor-arg value="js"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="rb" class="org.jamescarr.camel.script.ScriptEngineEvaluator" lazy-init="true">
+		<property name="scriptEngine">
+			<bean parent="scriptEngine">
+				<constructor-arg value="jruby"/>
+			</bean>
+		</property>
+	</bean>
 	
 	<camel:camelContext id="context">
-		<camel:route>
-			<camel:from uri="channel:js-bot@irc.freenode.net/#botwar"/>
-			<camel:pipeline>
-				<camel:to uri="bean:validator?method=validate"/>
-				<camel:to uri="bean:parser?method=parse"/>
-				<camel:to uri="bean:evaluator?method=evaluate"/>
-				<camel:to uri="channel:js-bot@irc.freenode.net/#botwar"/>			
-			</camel:pipeline>
-		</camel:route>
+		<camel:routeBuilder ref="script-selection-route"/>
 	</camel:camelContext>
 </beans>

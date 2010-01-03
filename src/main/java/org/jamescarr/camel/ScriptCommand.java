@@ -3,6 +3,13 @@ package org.jamescarr.camel;
 public class ScriptCommand {
 	private String targetLanguage;
 	private String expression;
+	public ScriptCommand(){}
+	public ScriptCommand(String targetLanguage, String expression) {
+		this.targetLanguage = targetLanguage;
+		this.expression = expression;
+		
+	}
+
 	public String getTargetLanguage() {
 		return targetLanguage;
 	}
