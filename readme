@@ -1,21 +1,27 @@
 IRC Javascript Evaluator Example
 --------------------------------
-Just a simple example of using camel to receive a message from an irc based endpoint, parse it through a javascript ScriptEngine, and send the result back to the irc endpoint. 
+Just a simple example of using camel to receive a message from an irc based endpoint, route it through the appropriate scripting engine and send the result back to the irc endpoint. 
 
-Requires JAVA_HOME to be set to a java6 SDK. Won't work on anything else because I wrote this quick and on the fly
+Requires JAVA_HOME to be set to a java6 SDK. Won't work on anything else because I wrote this quick and on the fly just to learn camel.
 
 Starting
 --------
 From the command line type 
- mvn compile exec:java -Dexec.mainClass=org.jamescarr.camel.App
+ mvn compile exec:java -Dexec.mainClass=org.jamescarr.camel.Main
 
 Usage
 -----
-By default it creates a bot named js-bot and drops it in #botwar on irc.freenode.net. To test it, join irc.freenode.net/#botwar and type
+By default it creates a bot named lang-bot and drops it in #botwar on irc.freenode.net. To test it, join irc.freenode.net/#botwar and type
 
-?eval [some javascript snippet]
+?js [some javascript snippet]
+or
+?rb [some ruby snippet]
 
 for example:
-?eval (function(n){ return n==1?n:n*arguments.callee(n-1)})(5)
+?js (function(n){ return n==1?n:n*arguments.callee(n-1)})(5)
 
+Under The Hood
+--------------
+If you want to see all the camel magic used for this example, take a peek at ScriptSelectionRoute.java (where you can also specify the name for the bot as well). The spring configuration (irc-example.xml) is purposefully kept small and only contains the camelContext (so spring can manage it) and references to the script engines used (Because I don't know how to do it otherwise).
 
+Have fun!
