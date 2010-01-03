@@ -21,5 +21,14 @@ public class CommandParserTest {
 		
 		assertEquals("py", command.getTargetLanguage());
 	}
+	
+	@Test
+	public void shouldGetTheExpressionFromInput(){
+		String input = "?rb 2 + 2 % 3";
+		
+		ScriptCommand command = commandParser.parse(input);
+		
+		assertEquals("2 + 2 % 3", command.getExpression());
+	}
 
 }

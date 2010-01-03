@@ -14,10 +14,16 @@
 		<property name="engine" ref="scriptEngine"/>
 	</bean>
 	<bean id="channel" class="org.apache.camel.component.irc.IrcComponent" scope="prototype"/>
+	
+	<bean id="parser" class="org.jamescarr.camel.CommandParser"/>
+	<bean id="validator" class="org.jamescarr.camel.ScriptInputValidator" />
+	
 	<camel:camelContext id="context">
 		<camel:route>
 			<camel:from uri="channel:js-bot@irc.freenode.net/#botwar"/>
 			<camel:pipeline>
+				<camel:to uri="bean:validator?method=validate"/>
+				<camel:to uri="bean:parser?method=parse"/>
 				<camel:to uri="bean:evaluator?method=evaluate"/>
 				<camel:to uri="channel:js-bot@irc.freenode.net/#botwar"/>			
 			</camel:pipeline>

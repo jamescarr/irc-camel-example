@@ -1,16 +1,13 @@
 package org.jamescarr.camel;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import static org.apache.commons.lang.StringUtils.substringAfter;
+import static org.apache.commons.lang.StringUtils.substringBefore;
 public class CommandParser {
 
 	public ScriptCommand parse(String input) {
-		Matcher m = Pattern.compile("^\\?(.*)\\s(.*)$").matcher(input);
-		m.find();
-		
 		ScriptCommand command = new ScriptCommand();
-		command.setTargetLanguage(m.group(1));
+		command.setTargetLanguage(substringBefore(input, " ").replaceAll("^\\?", ""));
+		command.setExpression(substringAfter(input, " "));
 		return command;
 	}
 

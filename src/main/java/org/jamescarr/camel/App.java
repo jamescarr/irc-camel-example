@@ -16,14 +16,11 @@ public class App {
 		this.engine = engine;
 	}
 
-	public String evaluate(String input) {
+	public String evaluate(ScriptCommand command) {
 		try {
-			if (input.startsWith("?eval ")) {
-				return engine.eval(input.replaceAll("^\\?eval ", "")) + "";
-			}
+			return engine.eval(command.getExpression()) + "";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-		throw new RuntimeException("unable to parse");
 	}
 }
