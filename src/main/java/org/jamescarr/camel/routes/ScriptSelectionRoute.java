@@ -19,14 +19,13 @@ public class ScriptSelectionRoute extends RouteBuilder{
 			.choice()
 				.when(languageIs("js"))
 					.to("bean:js?method=evaluate")
-					.to("seda:display")
 				.when(languageIs("rb"))
 					.to("bean:rb?method=evaluate")
-					.to("seda:display")
 				.otherwise()
-					.to("bean:default-eval")
-					.to("seda:display");
-		
+					.to("bean:default-eval")	
+				.end()
+			.to("seda:display");
+			
 		from("seda:display")
 			.to("irc:lang-bot@irc.freenode.net/#botwar");
 	}
